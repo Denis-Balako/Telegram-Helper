@@ -1,6 +1,6 @@
 package com.balako.telegramhelper.dto.chatgpt.response;
 
-import com.balako.telegramhelper.model.Message;
+import com.balako.telegramhelper.model.ChatGptMessage;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,6 @@ public class ChatResponseDto {
     @Data
     public static class Choice {
         private int index;
-        private Message message;
+        private ChatGptMessage message;
     }
 }

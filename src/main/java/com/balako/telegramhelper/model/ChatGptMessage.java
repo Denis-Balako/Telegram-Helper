@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Message {
+public class ChatGptMessage {
     private String role;
     private String content;
 }
