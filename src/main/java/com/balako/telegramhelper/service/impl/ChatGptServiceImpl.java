@@ -21,12 +21,14 @@ public class ChatGptServiceImpl implements ChatGptService {
         this.restTemplate = restTemplate;
     }
 
-
     @Override
     public ChatResponseDto getChatGptResponse(String prompt) {
         ChatRequestDto request = new ChatRequestDto(model, prompt);
-        ChatResponseDto response = restTemplate.postForObject(apiUrl, request, ChatResponseDto.class);
-        if (response == null || response.getChoices() == null || response.getChoices().isEmpty()) {
+        ChatResponseDto response = restTemplate.postForObject(
+                apiUrl, request, ChatResponseDto.class);
+        if (response == null
+                || response.getChoices() == null
+                || response.getChoices().isEmpty()) {
             throw new ChatGptException("No response", new RuntimeException());
         }
         return response;
