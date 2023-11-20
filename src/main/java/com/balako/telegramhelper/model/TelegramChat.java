@@ -20,6 +20,7 @@ public class TelegramChat {
     private ChatType chatType;
     @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private boolean isDeleted = false;
 
     public enum ChatType {

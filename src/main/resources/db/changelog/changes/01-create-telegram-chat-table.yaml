@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-telegram-chat-table
+      author: denys-balako
+      changes:
+        - createTable:
+            tableName: telegram_chat
+            columns:
+              - column:
+                  name: chat_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chat_type
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
