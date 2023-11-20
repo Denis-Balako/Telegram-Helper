@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-telegram-message-table
+      author: denys-balako
+      changes:
+        - createTable:
+            tableName: telegram_message
+            columns:
+              - column:
+                  name: message_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date
+                  type: timestamp(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chat_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_chat_message
+                    references: telegram_chat(chat_id)
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_user_message
+                    references: telegram_user(user_id)
+                    nullable: false
+              - column:
+                  name: text
+                  type: text
+              - column:
+                  name: type
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
