@@ -26,8 +26,9 @@ public class TelegramMessage {
     @JoinColumn(name = "chat_id", referencedColumnName = "chatId", nullable = false)
     private TelegramChat chat;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "telegram_user_id", referencedColumnName = "userId", nullable = false)
+    @JoinColumn(name = "telegram_user_id", referencedColumnName = "userId")
     private TelegramUser telegramUser;
+    @Column(name = "text", columnDefinition = "TEXT")
     private String text;
     private MessageType type;
     private boolean isDeleted = false;

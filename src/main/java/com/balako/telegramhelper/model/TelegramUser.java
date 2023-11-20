@@ -17,6 +17,8 @@ public class TelegramUser {
     @Id
     @Column(nullable = false, unique = true)
     private Long userId;
+    @Column(nullable = false, unique = true)
+    private String username;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
