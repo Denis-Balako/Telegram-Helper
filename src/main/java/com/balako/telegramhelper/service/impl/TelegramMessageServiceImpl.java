@@ -10,10 +10,13 @@ import com.balako.telegramhelper.repository.TelegramChatRepository;
 import com.balako.telegramhelper.repository.TelegramMessageRepository;
 import com.balako.telegramhelper.repository.TelegramUserRepository;
 import com.balako.telegramhelper.service.TelegramMessageService;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -35,7 +38,37 @@ public class TelegramMessageServiceImpl implements TelegramMessageService {
         message.setText(update.getText());
         message.setType(update.getType());
         message.setTelegramUser(findOrCreateTelegramUser(update.getUser()));
-        return telegramMessageMapper.toDto(telegramMessageRepository.save(message));
+        telegramMessageRepository.save(message);
+        return telegramMessageMapper.toDto(message);
+    }
+
+    @Override
+    public TelegramMessageDto findById(Long id) {
+        TelegramMessage message = telegramMessageRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find message by id: " + id)
+        );
+        return telegramMessageMapper.toDto(message);
+    }
+
+    @Override
+    public List<TelegramMessageDto> findAll(Pageable pageable) {
+        return telegramMessageRepository.findAll(pageable).stream()
+                .map(telegramMessageMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<TelegramMessageDto> findAllByUserId(Long userId, Pageable pageable) {
+        return telegramMessageRepository.findByUserIdWithPage(userId, pageable).stream()
+                .map(telegramMessageMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<TelegramMessageDto> findAllByChatId(Long chatId, Pageable pageable) {
+        return telegramMessageRepository.findByChatIdWithPage(chatId, pageable).stream()
+                .map(telegramMessageMapper::toDto)
+                .toList();
     }
 
     private LocalDateTime convertUnixTimeToLocalDateTime(Long epochTimeMillis) {

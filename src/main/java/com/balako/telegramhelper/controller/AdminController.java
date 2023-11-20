@@ -1,6 +1,8 @@
 package com.balako.telegramhelper.controller;
 
+import com.balako.telegramhelper.dto.telegram.response.TelegramMessageDto;
 import com.balako.telegramhelper.dto.telegram.response.TelegramUserDto;
+import com.balako.telegramhelper.service.TelegramMessageService;
 import com.balako.telegramhelper.service.TelegramUserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/logs")
 public class AdminController {
     private final TelegramUserService telegramUserService;
+    private final TelegramMessageService telegramMessageService;
+
+    @GetMapping
+    public List<TelegramMessageDto> getAllMessages(Pageable pageable) {
+        return telegramMessageService.findAll(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public TelegramMessageDto getAllMessagesById(@PathVariable Long id) {
+        return telegramMessageService.findById(id);
+    }
 
     @GetMapping("/users")
     public List<TelegramUserDto> getAllUsers(Pageable pageable) {
@@ -22,7 +35,19 @@ public class AdminController {
     }
 
     @GetMapping("/users/{id}")
-    public TelegramUserDto getById(@PathVariable Long id) {
+    public TelegramUserDto getUserById(@PathVariable Long id) {
         return telegramUserService.getById(id);
+    }
+
+    @GetMapping("/users/{id}/messages")
+    public List<TelegramMessageDto> getAllMessagesByUserId(
+            @PathVariable Long id, Pageable pageable) {
+        return telegramMessageService.findAllByUserId(id, pageable);
+    }
+
+    @GetMapping("/chats/{id}/messages")
+    public List<TelegramMessageDto> getAllMessagesByChatId(
+            @PathVariable Long id, Pageable pageable) {
+        return telegramMessageService.findAllByChatId(id, pageable);
     }
 }

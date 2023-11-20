@@ -5,7 +5,7 @@ import com.balako.telegramhelper.model.TelegramMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = {TelegramUserMapper.class, TelegramChatMapper.class})
 public interface TelegramMessageMapper {
     TelegramMessageMapper INSTANCE = Mappers.getMapper(TelegramMessageMapper.class);
 
