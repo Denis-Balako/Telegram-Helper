@@ -1,19 +1,20 @@
 package com.balako.telegramhelper.dto.telegram.response;
 
+import com.balako.telegramhelper.model.TelegramChat;
 import com.balako.telegramhelper.model.TelegramMessage;
-import java.time.LocalDateTime;
+import com.balako.telegramhelper.model.TelegramUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-public class TelegramMessageDto {
-    private Long messageId;
-    private LocalDateTime date;
-    private TelegramChatDto chat;
-    private TelegramUserDto telegramUser;
+public class TelegramUpdateDto {
+    private Integer messageId;
+    private Integer date;
+    private TelegramUser user;
+    private TelegramChat chat;
     private String text;
     private TelegramMessage.MessageType type;
 }
