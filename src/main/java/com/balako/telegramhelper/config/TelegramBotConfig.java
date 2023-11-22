@@ -1,8 +1,8 @@
 package com.balako.telegramhelper.config;
 
-import com.balako.telegramhelper.service.ChatGptService;
 import com.balako.telegramhelper.service.TelegramMessageService;
 import com.balako.telegramhelper.telegramapi.HelperBot;
+import com.balako.telegramhelper.telegramapi.TelegramHandlerManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,18 +20,21 @@ public class TelegramBotConfig {
     private String botName;
     @Value("${bot.token}")
     private String token;
-    private final ChatGptService chatGptService;
+    private final TelegramHandlerManager handlerManager;
     private final TelegramMessageService telegramMessageService;
 
-    public TelegramBotConfig(ChatGptService chatGptService,
+    public TelegramBotConfig(TelegramHandlerManager handlerManager,
                              TelegramMessageService telegramMessageService) {
-        this.chatGptService = chatGptService;
+        this.handlerManager = handlerManager;
         this.telegramMessageService = telegramMessageService;
     }
 
     @Bean
     public HelperBot createBot() {
-        return new HelperBot(botName, token, chatGptService, telegramMessageService);
+        return new HelperBot(botName,
+                token,
+                handlerManager,
+                telegramMessageService);
     }
 
     @EventListener({ContextRefreshedEvent.class})
