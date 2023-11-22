@@ -44,7 +44,7 @@ public class TelegramMessageServiceImpl implements TelegramMessageService {
 
     @Override
     public TelegramMessageDto findById(Long id) {
-        TelegramMessage message = telegramMessageRepository.findById(id).orElseThrow(
+        TelegramMessage message = telegramMessageRepository.findByMessageIdWithChatAndUser(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find message by id: " + id)
         );
         return telegramMessageMapper.toDto(message);
@@ -52,7 +52,7 @@ public class TelegramMessageServiceImpl implements TelegramMessageService {
 
     @Override
     public List<TelegramMessageDto> findAll(Pageable pageable) {
-        return telegramMessageRepository.findAll(pageable).stream()
+        return telegramMessageRepository.findAllWithChatAndUser(pageable).stream()
                 .map(telegramMessageMapper::toDto)
                 .toList();
     }
