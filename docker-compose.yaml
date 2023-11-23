@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  postgresdb:
+    platform: linux/x86_64
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DATABASE
+    ports:
+      - $POSTGRES_LOCAL_PORT:$POSTGRES_DOCKER_PORT
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+  app:
+    restart: always
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    image: telegram-helper
+    build: .
+    env_file: ./.env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+      - $DEBUG_PORT:$DEBUG_PORT
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdb:$POSTGRES_DOCKER_PORT/$POSTGRES_DATABASE
+      SPRING_DATASOURCE_USERNAME: $POSTGRES_USER
+      SPRING_DATASOURCE_PASSWORD: $POSTGRES_PASSWORD
+
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
+      OPENAI_KEY: ${OPENAI_KEY}
+      BOT_TOKEN: ${BOT_TOKEN}
+      BOT_NAME: ${BOT_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT

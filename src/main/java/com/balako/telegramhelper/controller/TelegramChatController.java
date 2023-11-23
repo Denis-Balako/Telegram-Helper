@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/chats")
-public class TelegramChatsController {
+public class TelegramChatController {
     private final TelegramMessageService telegramMessageService;
     private final TelegramChatService telegramChatService;
 
