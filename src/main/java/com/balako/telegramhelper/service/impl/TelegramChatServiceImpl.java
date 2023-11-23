@@ -19,7 +19,7 @@ public class TelegramChatServiceImpl implements TelegramChatService {
 
     @Override
     public List<TelegramChatDto> findAll(Pageable pageable) {
-        return telegramChatRepository.findAll().stream()
+        return telegramChatRepository.findAll(pageable).stream()
                 .map(telegramChatMapper::toDto)
                 .toList();
     }
